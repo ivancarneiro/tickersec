@@ -1,3 +1,5 @@
 \__pycache__
 .tickersec
+.venv
+.vscode
 .env
