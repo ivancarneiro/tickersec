@@ -1,7 +1,6 @@
 
 from pathlib import Path
 from decouple import config
-from django import template
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,6 +31,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'tickersec',
     'dash',
+    'core',
 ]
 
 MIDDLEWARE = [
