@@ -1,0 +1,3 @@
+AzulMilei = #232D4F
+
+https://dash.plotly.com/minimal-app
