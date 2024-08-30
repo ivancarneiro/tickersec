@@ -1,18 +1,20 @@
-import re
+from dataclasses import fields
+from tkinter import Widget
 from django import forms
-from django.forms import ValidationError
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from .validators import *
+from .models import TicketCategory
 
 
 class LoginForm(AuthenticationForm):
 
     username = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'nombre de usuario',
+        "placeholder": "nombre de usuario",
     }))
 
     password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'contraseña',
+        "placeholder": "contraseña",
     }))
 
 
@@ -30,9 +32,41 @@ class SignupForm(UserCreationForm):
     }))
 
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'ingresá tu password',
+        'placeholder': 'Ingrese una contraseña',
     }))
 
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Repeat password',
+        'placeholder': 'Repita la contraseña',
     }))
+
+    def save(self, commit=True):
+        user = super(SignupForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
+
+
+class TicketCategoryForm(forms.ModelForm):
+    
+    class Meta:
+        model = TicketCategory
+        fields = ["category", "subcategory", "description"]
+        widgets = {
+            "description" : forms.Textarea(attrs={'cols':5}),
+        }
+
+
+class SearchForm(forms.Form):
+    q = forms.CharField(
+        label="search",
+        required=False,
+        min_length=3,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Ingrese un parametro para buscar...",
+            }
+        )
+    )
