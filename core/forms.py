@@ -1,10 +1,12 @@
-from dataclasses import fields
+from dataclasses import field, fields
+from pyexpat import model
 from tkinter import Widget
+from turtle import width
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .validators import *
-from .models import TicketCategory
+from .models import *
 
 
 class LoginForm(AuthenticationForm):
@@ -70,3 +72,13 @@ class SearchForm(forms.Form):
             }
         )
     )
+
+
+class TicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ["title", "type", "category", "severity", "impact", "assignedTo", "resume", "caputres"]
+        widgets = {
+            "resume" : forms.Textarea(attrs={'cols':5}),
+            "caputres" : forms.ClearableFileInput(attrs={"multiple": True}),
+        }
