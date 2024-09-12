@@ -8,4 +8,6 @@ app_name = 'core'
 
 urlpatterns = [
     path("tickets/", TicketListView.as_view(), name="tickets"),
+    path("tickets/new_ticket", TicketCreateView.as_view(), name="new_ticket"),
+    path("categories/", CategoryListView.as_view(), name="categories"),
 ]

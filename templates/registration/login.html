@@ -1,0 +1,43 @@
+{% extends "dash/base.html" %}
+
+{% block title %} Login {% endblock title %}
+
+{% block main %}
+
+<div class="d-flex flex-column justify-content-center align-items-center m-5">
+    <div class="alert-danger" role="alert">
+        {% if form.errors %}
+        <p>Usuario o contraseña incorrecto.</p>
+        {% endif %}
+    
+        {% if next %}
+        {% if user.is_authenticated %}
+        <p>Usuario sin autorización al recurso solicitado.</p>
+        {% else %}
+        <p>Por favor, ingresa con un usuario autorizado para ver esta página.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+    <form class="form-control w-50 p-4 border rounded shadow" method="post" action="{% url 'login' %}" role="form">
+        {% csrf_token %}
+
+        <div class="form-group mb-2">
+            <div class="form-label">{{ form.username.label_tag }}</div>
+            <div class="form-input">{{ form.username }}</div>
+        </div>
+        <div class="form-group mb-2">
+            <div class="form-label">{{ form.password.label_tag }}</div>
+            <div class="form-input">{{ form.password }}</div>
+        </div>
+
+        <div>
+            <input class="btn btn-success" type="submit" value="login"/>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </div>
+    </form>
+
+    {# Assumes you setup the password_reset view in your URLconf #}
+    <p><a href="{% url 'password_reset' %}">Resetear contraseña?</a></p>
+
+</div>
+{% endblock %}

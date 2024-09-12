@@ -1,0 +1,27 @@
+/* static/css/styles.css */
+:root {
+    --bg-blueMilei: rgb(35, 45, 79); /* Define tu color aquí */
+    --bg-blueMilei-subtle: rgb(45, 55, 89); /* Variante con opacidad */
+}
+
+.bg-blueMilei {
+    background-color: var(--bg-blueMilei) !important;
+}
+
+.bg-blueMilei-subtle {
+    background-color: var(--bg-blueMilei-subtle) !important;
+}
+
+
+.navItemEffect:hover {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.navTextEffect {
+    color:white;
+}
+
+.navTextEffect:hover {
+    color: black;
+}

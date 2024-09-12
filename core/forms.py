@@ -23,27 +23,27 @@ class LoginForm(AuthenticationForm):
 class SignupForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ("username", "email", "password1", "password2")
 
     username = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'nombre de usuario',
+        "placeholder": "nombre de usuario",
     }))
 
     email = forms.CharField(widget=forms.EmailInput(attrs={
-        'placeholder': 'pepito@correo.com',
+        "placeholder": "pepito@correo.com",
     }))
 
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Ingrese una contraseña',
+        "placeholder": "Ingrese una contraseña",
     }))
 
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Repita la contraseña',
+        "placeholder": "Repita la contraseña",
     }))
 
     def save(self, commit=True):
         user = super(SignupForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
+        user.email = self.cleaned_data["email"]
         if commit:
             user.save()
         return user
@@ -53,9 +53,9 @@ class TicketCategoryForm(forms.ModelForm):
     
     class Meta:
         model = TicketCategory
-        fields = ["category", "subcategory", "description"]
+        fields = ["name", "subcategory", "description"]
         widgets = {
-            "description" : forms.Textarea(attrs={'cols':5}),
+            "description" : forms.Textarea(attrs={"cols":5}),
         }
 
 
@@ -77,8 +77,13 @@ class SearchForm(forms.Form):
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ["title", "type", "category", "severity", "impact", "assignedTo", "resume", "caputres"]
+        fields = ["type", "category", "title", "severity", "impact", "assignedTo", "resume"]
         widgets = {
-            "resume" : forms.Textarea(attrs={'cols':5}),
-            "caputres" : forms.ClearableFileInput(attrs={"multiple": True}),
+            "type": forms.Select(attrs={"class":"form-control"}),
+            "category": forms.Select(attrs={"class":"form-control"}),
+            "title": forms.TextInput(attrs={"class":"form-control"}),
+            "severity": forms.Select(attrs={"class":"form-control"}),
+            "impact": forms.Select(attrs={"class":"form-control"}),
+            "assignedTo": forms.Select(attrs={"class":"form-control"}),
+            "resume" : forms.Textarea(attrs={"class":"form-control", "rows": 4,}),
         }
