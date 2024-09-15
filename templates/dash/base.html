@@ -50,12 +50,12 @@
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Administración
                             </a>
-                            <ul class="dropdown-menu bg-blueMilei-subtle">
+                            <ul class="border-light dropdown-menu bg-blueMilei-subtle">
                                 <li><a class="navTextEffect dropdown-item"
                                         href="{% url 'core:categories' %}">Categorías</a></li>
                                 <li><a class="navTextEffect dropdown-item" href="#">Usuarios</a></li>
                                 <li>
-                                    <hr class="dropdown-divider">
+                                    <hr class="border-light dropdown-divider">
                                 </li>
                                 <li><a class="navTextEffect dropdown-item" href="#">Reportes</a></li>
                             </ul>
@@ -73,7 +73,7 @@
                     </form>
                 </div>
             </div>
-            <div class="d-flex justify-content-end p-1 me-2 bg-blueMilei-subtle rounded">
+            <div class="d-flex justify-content-end p-1 me-2 bg-blueMilei-subtle  border border-light rounded">
                 {% if user.is_authenticated %}
                 <!-- user_detail -->
                 <div class="nav-item dropdown">

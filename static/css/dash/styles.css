@@ -1,7 +1,7 @@
 /* static/css/styles.css */
 :root {
     --bg-blueMilei: rgb(35, 45, 79); /* Define tu color aquí */
-    --bg-blueMilei-subtle: rgb(45, 55, 89); /* Variante con opacidad */
+    --bg-blueMilei-subtle: rgb(45, 55, 100); /* Variante con opacidad */
 }
 
 .bg-blueMilei {
@@ -11,7 +11,6 @@
 .bg-blueMilei-subtle {
     background-color: var(--bg-blueMilei-subtle) !important;
 }
-
 
 .navItemEffect:hover {
     background-color: white;
@@ -24,4 +23,72 @@
 
 .navTextEffect:hover {
     color: black;
+}
+
+.severidad-critica {
+    background-color: red;
+    color: white;
+    border-radius: 3px;
+}
+
+.severidad-alta {
+    background-color: orange;
+    color: whitesmoke;
+    border-radius: 3px;
+}
+
+.severidad-media {
+    background-color: yellow;
+    color: black;
+    border-radius: 3px;
+}
+
+.severidad-baja {
+    background-color: #33ff00;
+    color: black;
+    border-radius: 3px;
+}
+
+.impacto-critico {
+    color: red;
+    text-shadow: rgb(120, 120, 120) 1px 1px 2px;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+}
+
+.impacto-importante {
+    color: orange;
+    text-shadow: rgb(120, 120, 120) 1px 1px 2px;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+}
+
+.impacto-moderado {
+    color: yellow;
+    text-shadow: rgb(120, 120, 120) 1px 1px 2px;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+}
+
+.impacto-bajo {
+    color: #33ff00;
+    text-shadow: rgb(120, 120, 120) 1px 1px 2px;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+}
+
+.impacto-nulo {
+    color: black;
+    font-style: italic;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
 }

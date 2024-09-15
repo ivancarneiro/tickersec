@@ -39,7 +39,8 @@
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Estado</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Creado por</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Asignado a</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Fecha de Creación</th>
+                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Registrado</th>
+                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Actualizado</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Resolución</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Acciones</th>
             </tr>
@@ -49,20 +50,22 @@
             <tr>
                 <th scope="row">
                     {% if user.is_authenticated %}
-                    <a class="text-decoration-none" href="{% url 'core:detail-ticket' ticket.pk %}">{{ticket.type}}{{ticket.pk}}</a>
+                    <a class="text-decoration-none"
+                        href="{% url 'core:detail-ticket' ticket.pk %}">{{ticket.type}}{{ticket.pk}}</a>
                     {% else %}
                     {{ticket.type}}{{ticket.pk}}
                     {% endif %}
                 </th>
                 <td>{{ ticket.title }}</td>
                 <td>{{ ticket.category }}</td>
-                <td>{{ ticket.severity }}</td>
-                <td>{{ ticket.impact }}</td>
+                <td><span class="severidad-{{ ticket.severity|lower }} px-1">{{ ticket.severity }}</span></td>
+                <td><span class="impacto-{{ ticket.impact|lower }}">{{ ticket.impact }}</span></td>
                 <td>{{ ticket.status }}</td>
                 <td>{{ ticket.createdBy }}</td>
                 <td>{{ ticket.assignedTo }}</td>
                 <td>{{ ticket.createdAt }}</td>
-                <td>{{ ticket.resolution }}</td>
+                <td>{{ ticket.lastUpdate }}</td>
+                <td>{{ ticket.resolution_display }}</td>
                 <td>
                     {% if user.is_authenticated %}
                     <a href="#" class="btn btn-sm btn-outline-primary">

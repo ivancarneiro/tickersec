@@ -2,6 +2,7 @@ from dataclasses import field, fields
 from pyexpat import model
 from tkinter import Widget
 from turtle import width
+from xml.dom.minidom import Attr
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -49,7 +50,6 @@ class SignupForm(UserCreationForm):
         return user
 
 
-
 class SearchForm(forms.Form):
     q = forms.CharField(
         label="search",
@@ -63,6 +63,7 @@ class SearchForm(forms.Form):
             }
         )
     )
+
 
 class TicketCategoryForm(forms.ModelForm):
     
