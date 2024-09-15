@@ -26,13 +26,13 @@ class SignupForm(UserCreationForm):
     }))
 
     email = forms.CharField(widget=forms.EmailInput(attrs={
-        'placeholder': 'pepito@correo.com',
+        'placeholder': 'juan.perez@gmail.com',
     }))
 
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'ingresá tu password',
+        'placeholder': 'ingresá una contraseña',
     }))
 
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Repeat password',
+        'placeholder': 'repita la miasma contraseña...',
     }))

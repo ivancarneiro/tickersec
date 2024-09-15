@@ -1,11 +1,20 @@
-{% extends "dash/base.html" %}
-
-{% block title %} Nueva Categoría {% endblock title %}
-
-{% load static %}
-
-{% block main %}
-<div class="container-fluid">
-    <h1>FORM NUEVA CATEGORIA</h1>
+<div class="container p-2">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert">
+        {{message}}
+    </div>
+    {% endfor %}
+    <form method="post" action="{% url 'core:new-category' %}" enctype="multipart/form-data" class="bg-white shadow-lg border border-5 border-primary rounded-2 p-3">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group mb-3">
+            <label for="{{form.label.id_for_label}}">{{field.label}}</label>
+            {{field}}
+        </div>
+        {% endfor %}
+        <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
 </div>
-{% endblock main %}

@@ -4,7 +4,7 @@
         {{message}}
     </div>
     {% endfor %}
-    <form method="post" action="{% url 'core:new_ticket' %}" enctype="multipart/form-data" class="bg-white shadow-lg border border-5 border-primary rounded-2 p-3">
+    <form method="post" action="{% url 'core:new-ticket' %}" enctype="multipart/form-data" class="bg-white shadow-lg border border-5 border-primary rounded-2 p-3">
         {% csrf_token %}
         {% for field in form %}
         <div class="form-group mb-3">

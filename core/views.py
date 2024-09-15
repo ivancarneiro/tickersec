@@ -20,12 +20,12 @@ class CategoryListView(ListView):
         return context
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(CreateView):   
     model = TicketCategory
     form_class = TicketCategoryForm
     template_name = "core/category_create.html"
     login_url = "login"
-    success_url = reverse_lazy("core/category_list.html")
+    success_url = reverse_lazy("core:categories")
 
     def form_valid(self, form):
         form.instance.createdBy = self.request.user
@@ -67,3 +67,16 @@ class TicketCreateView(CreateView):
         form.instance.createdBy = self.request.user
         form.instance.save()
         return super().form_valid(form)
+
+
+class TicketDetailView(DeleteView):
+    model = Ticket
+    template_name = "core/ticket_detail.html"
+    context_object_name = "ticket"
+    login_url = "login"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ticket = Ticket.objects.get(pk=self.kwargs["pk"])
+        context["ticket"] = ticket
+        return context
