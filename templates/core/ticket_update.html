@@ -1,84 +1,27 @@
 {% extends "dash/base.html" %}
 
-{% block title %} Tickets {% endblock title %}
+{% block title %}Ticket {{ticket.type}}{{ticket.pk}} {% endblock title %}
 
 {% load static %}
 
 {% block main %}
-<div class="container-fluid my-2">
-    <div class="d-flex justify-content-end py-1">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-outline-primary shadow" data-bs-toggle="modal"
-            data-bs-target="#newTicketModal">
-            Registrar Ticket
-        </button>
+<div class="container m-5"></div>
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert">
+        {{message}}
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="newTicketModal" tabindex="-1" aria-labelledby="newTicketModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="newTicketModalLabel">Nuevo Ticket</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {% include "core/ticket_create.html" %}
-                </div>
-            </div>
+    {% endfor %}
+    <form method="post" enctype="multipart/form-data" class="bg-white shadow-lg border border-5 border-primary rounded-2 m-5 p-3">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group mb-3">
+            <label for="{{form.label.id_for_label}}">{{field.label}}</label>
+            {{field}}
         </div>
-    </div>
-
-    <table class="table table-hover">
-        <thead class="text-center">
-            <tr>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">#</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Título</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Categoría</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Severidad</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Impacto</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Estado</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Creado por</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Asignado a</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Fecha de Creación</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Resolución</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="text-center">
-            {% for ticket in ticket_list %}
-            <tr>
-                <th scope="row">
-                    {% if user.is_authenticated %}
-                    <a class="text-decoration-none" href="{% url 'core:detail-ticket' ticket.pk %}">{{ticket.type}}{{ticket.pk}}</a>
-                    {% else %}
-                    {{ticket.type}}{{ticket.pk}}
-                    {% endif %}
-                </th>
-                <td>{{ ticket.title }}</td>
-                <td>{{ ticket.category }}</td>
-                <td>{{ ticket.severity }}</td>
-                <td>{{ ticket.impact }}</td>
-                <td>{{ ticket.status }}</td>
-                <td>{{ ticket.createdBy }}</td>
-                <td>{{ ticket.assignedTo }}</td>
-                <td>{{ ticket.createdAt }}</td>
-                <td>{{ ticket.resolution }}</td>
-                <td>
-                    {% if user.is_authenticated %}
-                    <a href="#" class="btn btn-sm btn-outline-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-pencil-square" viewBox="0 0 16 16">
-                            <path
-                                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                            <path fill-rule="evenodd"
-                                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                        </svg>
-                    </a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% endfor %}
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
 </div>
 {% endblock main %}

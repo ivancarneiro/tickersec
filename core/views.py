@@ -1,5 +1,5 @@
-from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.shortcuts import redirect
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import Ticket, TicketCategory, TicketReport
@@ -70,6 +70,7 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
     template_name = 'core/ticket_detail.html'
     context_object_name = 'ticket'
     login_url = 'login'
+    form_class = TicketReportForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,13 +80,27 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         context['reports'] = TicketReport.objects.all()
         return context
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
+    def form_valid(self, form):
+        form.instance.createdBy = self.request.user
+        return super().form_valid(form)
+
+    def post(self, request, **kwargs):
         form = TicketReportForm(request.POST)
         if form.is_valid():
             ticket_report = form.save(commit=False)
-            ticket_report.ticket = self.object
+            ticket_report.ticket = self.get_object()
+            ticket_report.createdBy = self.request.user
             ticket_report.save()
-            return redirect(reverse_lazy('core:detail-ticket', kwargs={'pk': self.object.pk}))
+            return redirect(reverse_lazy('core:detail-ticket', kwargs={'pk': ticket_report.ticket.pk}))
         else:
             return self.render_to_response(self.get_context_data(form=form))
+
+
+class TicketUpdateView(LoginRequiredMixin, UpdateView):
+    model = Ticket
+    template_name = 'core/ticket_update.html'
+    form_class = TicketForm
+    login_url = 'login'
+    
+    def get_success_url(self):
+        return reverse_lazy('core:detail-ticket', kwargs={'pk': self.get_object().pk})

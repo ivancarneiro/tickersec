@@ -1,9 +1,11 @@
+from email.policy import default
+from typing import Self
 from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django_quill.fields import QuillField
 from django.utils import timezone
-from core.utils import ticket_capture_upload_to, TicketType, TicketStatus, Severity, Impact
+from core.utils import TicketType, TicketStatus, Severity, Impact
 
 
 class TicketCategory(models.Model):
@@ -25,8 +27,20 @@ class TicketCategory(models.Model):
 
 
 class TicketReport(models.Model):
-    report = QuillField(verbose_name='Reporte', blank=False,)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    createdBy = models.ForeignKey(User, verbose_name='Remitente', related_name='created_reports', on_delete=models.PROTECT, blank=False)
+    title = models.CharField(verbose_name='Titulo', max_length=50, blank=False)
+    report = QuillField(verbose_name='Reporte', blank=False, unique=True)
+    
+    def get_absolute_url(self):
+        return reverse('core:detail-report', kwargs={'pk': self.pk})
+    
+    def __str__(self):
+        return  f'Reporte {self.pk} - {self.title}'
 
+    class Meta:
+        ordering = ['createdAt']
+        verbose_name_plural = 'Reportes'
 
 class Ticket(models.Model):
     
@@ -60,7 +74,7 @@ class Ticket(models.Model):
             return f'{days}d {hours}h {minutes}min'
     
     def get_absolute_url(self):
-        return reverse('ticket:detail', kwargs={'pk': self.pk})
+        return reverse('core:detail-ticket', kwargs={'pk': self.pk})
     
     def __str__(self):
         return  f'{self.type}{self.pk} - {self.title}'
