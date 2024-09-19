@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_quill.fields import QuillField
 from django.utils import timezone
-from core.utils import ticket_capture_upload_to, TicketType, TicketStatus, Severity, Impact
+from core.utils import TicketType, TicketStatus, Severity, Impact
 
 
 class TicketCategory(models.Model):
@@ -25,6 +25,8 @@ class TicketCategory(models.Model):
 
 
 class TicketReport(models.Model):
+    createdAt = models.DateTimeField(auto_now_add=True) # auto_now_add: actualiza el valor con la hora y la fecha de creación del registro.
+    createdBy = models.ForeignKey(User, verbose_name='Remitente', related_name='created_reports', on_delete=models.PROTECT, blank=False)
     report = QuillField(verbose_name='Reporte', blank=False,)
 
 

@@ -4,13 +4,6 @@ from django.db import models
 from datetime import datetime
 
 
-def ticket_capture_upload_to(instance, filename):
-    # Obtener la fecha actual
-    now = datetime.now()
-    # Construir la ruta del archivo
-    path = f"ticket_captures/{now.year}/{now.month}/{now.day}/{instance.pk}"
-    return os.path.join(path, filename)
-
 class TicketType(models.TextChoices):
     INCIDENTE       = "INC", "Incidente"
     VULNERABILIDAD  = "VUL", "Vulnerabilidad"
