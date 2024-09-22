@@ -30,6 +30,7 @@ class TicketReport(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     createdBy = models.ForeignKey(User, verbose_name='Remitente', related_name='created_reports', on_delete=models.PROTECT, blank=False)
     title = models.CharField(verbose_name='Titulo', max_length=50, blank=False)
+    ticket = models.ForeignKey('Ticket', related_name='reportes', on_delete=models.PROTECT)
     report = QuillField(verbose_name='Reporte', blank=False, unique=True)
     
     def get_absolute_url(self):
@@ -64,6 +65,7 @@ class Ticket(models.Model):
         super().save(*args, **kwargs)
     
     def resolution_display(self):
+        '''Devuelve el tiempo de resolución de un ticket en formato entendible por humanos, Ej.: 2d 8h 3min'''
         if not self.resolution:
             return 'Sin resolver'
         else:
@@ -73,6 +75,12 @@ class Ticket(models.Model):
             minutes = (total_seconds % 3600) // 60
             return f'{days}d {hours}h {minutes}min'
     
+    def update_ticketStatus(self):
+        '''Actualiza el estado del ticket al crear el primer reporte.'''
+        if self.status == TicketStatus.ABIERTO and self.reportes.count() > 0:
+            self.status = TicketStatus.TRAMITADO
+        self.save()
+
     def get_absolute_url(self):
         return reverse('core:detail-ticket', kwargs={'pk': self.pk})
     

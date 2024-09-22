@@ -2,6 +2,8 @@ from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+
+from core.utils import TicketStatus
 from .models import Ticket, TicketCategory, TicketReport
 from .forms import TicketForm, TicketCategoryForm, TicketReportForm
 
@@ -77,21 +79,22 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         ticket = self.get_object()
         context['ticket'] = ticket
         context['form'] = TicketReportForm(initial={'ticket': ticket})
-        context['reports'] = TicketReport.objects.all()
+        context['reports'] = ticket.reportes.all()
         return context
 
     def form_valid(self, form):
         form.instance.createdBy = self.request.user
         return super().form_valid(form)
 
-    def post(self, request, **kwargs):
+    def post(self, request, *args, **kwargs):
         form = TicketReportForm(request.POST)
         if form.is_valid():
-            ticket_report = form.save(commit=False)
-            ticket_report.ticket = self.get_object()
-            ticket_report.createdBy = self.request.user
-            ticket_report.save()
-            return redirect(reverse_lazy('core:detail-ticket', kwargs={'pk': ticket_report.ticket.pk}))
+            report = form.save(commit=False)
+            report.ticket = self.get_object()
+            report.createdBy = self.request.user
+            report.save()
+            self.get_object().update_ticketStatus()
+            return redirect(reverse_lazy('core:detail-ticket', kwargs={'pk': report.ticket.pk}))
         else:
             return self.render_to_response(self.get_context_data(form=form))
 
