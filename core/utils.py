@@ -15,7 +15,7 @@ class TicketStatus(models.TextChoices):
     CERRADO     = "CERRADO", "Cerrado"
 
 class Severity(models.TextChoices):
-    CRITICA = "CRITICO"
+    CRITICA = "CRITICA"
     ALTA    = "ALTA"
     MEDIA   = "MEDIA"
     BAJA    = "BAJA"

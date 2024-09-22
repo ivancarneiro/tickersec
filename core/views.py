@@ -41,7 +41,7 @@ class CategoryDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class TicketListView(LoginRequiredMixin, ListView):
+class TicketListView(ListView):
     model = Ticket
     template_name = 'core/ticket_list.html'
     context_object_name = 'ticket_list'
