@@ -1,3 +1,4 @@
+from random import choices
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -61,47 +62,57 @@ class SearchForm(forms.Form):
 
 
 class TicketCategoryForm(forms.ModelForm):
-    
+
     class Meta:
         model = TicketCategory
         fields = ['name', 'subcategory', 'description']
         widgets = {
-            'name': forms.TextInput(attrs={'class':'form-control', 'minlength':3,}),
-            'subcategory': forms.TextInput(attrs={'class':'form-control', 'minlength':3}),
-            'description' : forms.Textarea(attrs={'class':'form-control', 'rows': 4, 'minlength':20}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'minlength': 3, }),
+            'subcategory': forms.TextInput(attrs={'class': 'form-control', 'minlength': 3}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'minlength': 20}),
         }
 
 
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['type', 'category', 'title', 'severity', 'impact', 'assignedTo', 'resume']
+        fields = ['type', 'category', 'title',
+            'severity', 'impact', 'assignedTo', 'resume']
         widgets = {
-            'type': forms.Select(attrs={'class':'form-control'}),
-            'category': forms.Select(attrs={'class':'form-control'}),
-            'title': forms.TextInput(attrs={'class':'form-control',  'minlength':5,}),
-            'severity': forms.Select(attrs={'class':'form-control'}),
-            'impact': forms.Select(attrs={'class':'form-control'}),
-            'assignedTo': forms.Select(attrs={'class':'form-control'}),
-            'resume' : forms.Textarea(attrs={'class':'form-control', 'rows': 4,}),
+            'type': forms.Select(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control',  'minlength': 5, }),
+            'severity': forms.Select(attrs={'class': 'form-control'}),
+            'impact': forms.Select(attrs={'class': 'form-control'}),
+            'assignedTo': forms.Select(attrs={'class': 'form-control'}),
+            'resume': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, }),
         }
+
 
 class TicketUpdateForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['type', 'category', 'title', 'severity', 'impact', 'assignedTo', 'status', 'resume']
+        fields = ['type', 'category', 'title', 'severity',
+            'impact', 'assignedTo', 'status', 'resume']
         widgets = {
-            'type': forms.Select(attrs={'class':'form-control'}),
-            'category': forms.Select(attrs={'class':'form-control'}),
-            'title': forms.TextInput(attrs={'class':'form-control',  'minlength':5,}),
-            'severity': forms.Select(attrs={'class':'form-control'}),
-            'impact': forms.Select(attrs={'class':'form-control'}),
-            'assignedTo': forms.Select(attrs={'class':'form-control'}),
-            'status': forms.Select(attrs={'class':'form-control'}),
-            'resume' : forms.Textarea(attrs={'class':'form-control', 'rows': 4,}),
+            'type': forms.Select(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control',  'minlength': 5, }),
+            'severity': forms.Select(attrs={'class': 'form-control'}),
+            'impact': forms.Select(attrs={'class': 'form-control'}),
+            'assignedTo': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'resume': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, }),
         }
 
+
 class TicketReportForm(forms.ModelForm):
+    CHOICES = [('','----'),('close','Cerrar')]
+    
+    action = forms.ChoiceField(choices=CHOICES, required=True, label='Acción')
     class Meta:
         model = TicketReport
-        fields = ['report']
+        fields = ['report','action']
+        widgets = {
+            'action': forms.Select(attrs={'class': 'form-select'})
+        }

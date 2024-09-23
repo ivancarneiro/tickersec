@@ -76,7 +76,7 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         ticket = self.get_object()
         context['ticket'] = ticket
-        context['form'] = TicketReportForm(initial={'ticket': ticket})
+        context['reportForm'] = TicketReportForm(initial={'ticket': ticket})
         context['reports'] = ticket.reportes.all()
         return context
 
@@ -105,3 +105,5 @@ class TicketUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('core:detail-ticket', kwargs={'pk': self.get_object().pk})
+
+# TODO falta manejar el request para el valor de action, que debería modificar el estado de un ticket en caso de elegir Cerrar.

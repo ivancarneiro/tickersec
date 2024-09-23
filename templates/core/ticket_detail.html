@@ -77,8 +77,8 @@
         {% endfor %}
         <form method="post" action="{% url 'core:detail-ticket' ticket.pk %}" enctype="multipart/form-data" class="p-3">
             {% csrf_token %}
-            {{ form.media}}
-            {% for field in form %}
+            {{ reportForm.media}}
+            {% for field in reportForm %}
             <div class="form-group mb-3">
                 <label for="{{form.label.id_for_label}}">{{field.label}}:</label>
                 {{field}}
