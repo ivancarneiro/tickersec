@@ -6,7 +6,7 @@
     {% endfor %}
     <form method="post" action="{% url 'core:new-ticket' %}" enctype="multipart/form-data" class="bg-white shadow-lg border border-5 border-primary rounded-2 p-3">
         {% csrf_token %}
-        {% for field in form %}
+        {% for field in newTicketForm %}
         <div class="form-group mb-3">
             <label for="{{form.label.id_for_label}}">{{field.label}}</label>
             {{field}}

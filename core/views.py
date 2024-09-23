@@ -2,10 +2,8 @@ from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-
-from core.utils import TicketStatus
-from .models import Ticket, TicketCategory, TicketReport
-from .forms import TicketForm, TicketCategoryForm, TicketReportForm
+from .models import *
+from .forms import *
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -51,7 +49,7 @@ class TicketListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = TicketForm()
+        context['newTicketForm'] = TicketForm()
         context['categories'] = TicketCategory.objects.all()
         return context
 
@@ -102,8 +100,8 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
 class TicketUpdateView(LoginRequiredMixin, UpdateView):
     model = Ticket
     template_name = 'core/ticket_update.html'
-    form_class = TicketForm
+    form_class = TicketUpdateForm
     login_url = 'login'
-    
+
     def get_success_url(self):
         return reverse_lazy('core:detail-ticket', kwargs={'pk': self.get_object().pk})

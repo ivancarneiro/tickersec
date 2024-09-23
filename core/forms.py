@@ -86,6 +86,20 @@ class TicketForm(forms.ModelForm):
             'resume' : forms.Textarea(attrs={'class':'form-control', 'rows': 4,}),
         }
 
+class TicketUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ['type', 'category', 'title', 'severity', 'impact', 'assignedTo', 'status', 'resume']
+        widgets = {
+            'type': forms.Select(attrs={'class':'form-control'}),
+            'category': forms.Select(attrs={'class':'form-control'}),
+            'title': forms.TextInput(attrs={'class':'form-control',  'minlength':5,}),
+            'severity': forms.Select(attrs={'class':'form-control'}),
+            'impact': forms.Select(attrs={'class':'form-control'}),
+            'assignedTo': forms.Select(attrs={'class':'form-control'}),
+            'status': forms.Select(attrs={'class':'form-control'}),
+            'resume' : forms.Textarea(attrs={'class':'form-control', 'rows': 4,}),
+        }
 
 class TicketReportForm(forms.ModelForm):
     class Meta:

@@ -51,7 +51,7 @@
 
 .impacto-critico {
     color: red;
-    text-shadow: rgb(120, 120, 120) 1px 1px 2px;
+    text-shadow: rgb(60, 60, 60) 1px 1px 2px;
     font-style: italic;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
@@ -60,7 +60,7 @@
 
 .impacto-importante {
     color: orange;
-    text-shadow: rgb(120, 120, 120) 1px 1px 2px;
+    text-shadow: rgb(60, 60, 60) 1px 1px 2px;
     font-style: italic;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
@@ -69,7 +69,7 @@
 
 .impacto-moderado {
     color: yellow;
-    text-shadow: rgb(120, 120, 120) 1px 1px 2px;
+    text-shadow: rgb(60, 60, 60) 1px 1px 2px;
     font-style: italic;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
@@ -78,7 +78,7 @@
 
 .impacto-bajo {
     color: #33ff00;
-    text-shadow: rgb(120, 120, 120) 1px 1px 2px;
+    text-shadow: rgb(60, 60, 60) 1px 1px 1px;
     font-style: italic;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
