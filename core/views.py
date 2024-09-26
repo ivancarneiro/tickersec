@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.urls import reverse_lazy
 from .models import *
 from .forms import *
@@ -80,10 +81,6 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         context['reports'] = ticket.reportes.all()
         return context
 
-    def form_valid(self, form):
-        form.instance.createdBy = self.request.user
-        return super().form_valid(form)
-
     def post(self, request, *args, **kwargs):
         form = TicketReportForm(request.POST)
         if form.is_valid():
@@ -91,9 +88,12 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
             report.ticket = self.get_object()
             report.createdBy = self.request.user
             report.save()
-            self.get_object().update_ticketStatus()
+            action = form.cleaned_data.get('action')
+            self.get_object().update_ticketStatus(action=action)
+            messages.success(request, 'Reporte creado y estado del ticket actualizado.')
             return redirect(reverse_lazy('core:detail-ticket', kwargs={'pk': report.ticket.pk}))
         else:
+            messages.error(request, 'Hubo un error al crear el reporte.')
             return self.render_to_response(self.get_context_data(form=form))
 
 
