@@ -112,7 +112,7 @@ class TicketReportForm(forms.ModelForm):
     action = forms.ChoiceField(choices=CHOICES, required=True, label='Acción')
     class Meta:
         model = TicketReport
-        fields = ['report','action']
+        fields = ['action','report']
         widgets = {
             'action': forms.Select(attrs={'class': 'form-select'})
         }
