@@ -47,11 +47,31 @@ class TicketListView(ListView):
     template_name = 'core/ticket_list.html'
     context_object_name = 'ticket_list'
     login_url = 'login'
+    paginate_by = 20
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        form = TicketSearchForm(self.request.GET)
+        if form.is_valid():
+            if form.cleaned_data['q']:
+                queryset = queryset.filter(title__icontains=form.cleaned_data['q'])
+            if form.cleaned_data['type']:
+                queryset = queryset.filter(type=form.cleaned_data['type'])
+            if form.cleaned_data['category']:
+                queryset = queryset.filter(category=form.cleaned_data['category'])
+            if form.cleaned_data['severity']:
+                queryset = queryset.filter(severity=form.cleaned_data['severity'])
+            if form.cleaned_data['impact']:
+                queryset = queryset.filter(impact=form.cleaned_data['impact'])
+            if form.cleaned_data['assignedTo']:
+                queryset = queryset.filter(assignedTo=form.cleaned_data['assignedTo'])
+        return queryset
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['newTicketForm'] = TicketForm()
         context['categories'] = TicketCategory.objects.all()
+        context['searchForm'] = TicketSearchForm(self.request.GET)
         return context
 
 

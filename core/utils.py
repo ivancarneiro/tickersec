@@ -1,7 +1,4 @@
-import os
-
 from django.db import models
-from datetime import datetime
 
 
 class TicketType(models.TextChoices):
@@ -22,7 +19,7 @@ class Severity(models.TextChoices):
     NULA    = "NULA"
 
 class Impact(models.TextChoices):
-    CRITICA     = "CRITICO"
+    CRITICO     = "CRITICO"
     IMPORTANTE  = "IMPORTANTE"
     MODERADO    = "MODERADO"
     BAJO        = "BAJO"

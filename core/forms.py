@@ -46,18 +46,48 @@ class SignupForm(UserCreationForm):
         return user
 
 
-class SearchForm(forms.Form):
+class TicketSearchForm(forms.Form):
     q = forms.CharField(
-        label='search',
+        label='Título',
         required=False,
         min_length=3,
         max_length=100,
         widget=forms.TextInput(
             attrs={
-                'class': 'form-control',
-                'placeholder': 'Ingrese un parametro para buscar...',
+                'class': 'form-control form-control-sm',
+                'placeholder': 'por título...',
             }
         )
+    )
+    type = forms.ChoiceField(
+        label='Tipo',
+        required=False,
+        choices=[('','--------')]+[(choice.name, choice.value) for choice in TicketType],
+        widget=forms.Select(attrs={'class': 'form-control form-control-sm text-center'})
+    )
+    category = forms.ModelChoiceField(
+        label='Categoría',
+        required=False,
+        queryset=TicketCategory.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control form-control-sm'})
+    )
+    severity = forms.ChoiceField(
+        label='Severidad',
+        required=False,
+        choices=[('','--------')]+[(choice.name, choice.value) for choice in Severity],
+        widget=forms.Select(attrs={'class': 'form-control form-control-sm text-center'})
+    )
+    impact = forms.ChoiceField(
+        label='Impacto',
+        required=False,
+        choices=[('','--------')]+[(choice.name, choice.value) for choice in Impact],
+        widget=forms.Select(attrs={'class': 'form-control form-control-sm text-center'})
+    )
+    assignedTo = forms.ModelChoiceField(
+        label='Responsable',
+        required=False,
+        queryset=User.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control form-control-sm text-center'})
     )
 
 
@@ -67,9 +97,9 @@ class TicketCategoryForm(forms.ModelForm):
         model = TicketCategory
         fields = ['name', 'subcategory', 'description']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'minlength': 3, }),
-            'subcategory': forms.TextInput(attrs={'class': 'form-control', 'minlength': 3}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'minlength': 20}),
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'minlength': 3, }),
+            'subcategory': forms.TextInput(attrs={'class': 'form-control form-control-sm', 'minlength': 3}),
+            'description': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 4, 'minlength': 20}),
         }
 
 
@@ -79,13 +109,13 @@ class TicketForm(forms.ModelForm):
         fields = ['type', 'category', 'title',
             'severity', 'impact', 'assignedTo', 'resume']
         widgets = {
-            'type': forms.Select(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'title': forms.TextInput(attrs={'class': 'form-control',  'minlength': 5, }),
-            'severity': forms.Select(attrs={'class': 'form-control'}),
-            'impact': forms.Select(attrs={'class': 'form-control'}),
-            'assignedTo': forms.Select(attrs={'class': 'form-control'}),
-            'resume': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, }),
+            'type': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'category': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'title': forms.TextInput(attrs={'class': 'form-control form-control-sm',  'minlength': 5, }),
+            'severity': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'impact': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'assignedTo': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'resume': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 4, }),
         }
 
 
@@ -95,14 +125,14 @@ class TicketUpdateForm(forms.ModelForm):
         fields = ['type', 'category', 'title', 'severity',
             'impact', 'assignedTo', 'status', 'resume']
         widgets = {
-            'type': forms.Select(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'title': forms.TextInput(attrs={'class': 'form-control',  'minlength': 5, }),
-            'severity': forms.Select(attrs={'class': 'form-control'}),
-            'impact': forms.Select(attrs={'class': 'form-control'}),
-            'assignedTo': forms.Select(attrs={'class': 'form-control'}),
-            'status': forms.Select(attrs={'class': 'form-control'}),
-            'resume': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, }),
+            'type': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'category': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'title': forms.TextInput(attrs={'class': 'form-control form-control-sm',  'minlength': 5, }),
+            'severity': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'impact': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'assignedTo': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'status': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'resume': forms.Textarea(attrs={'class': 'form-control form-control-sm', 'rows': 4, }),
         }
 
 

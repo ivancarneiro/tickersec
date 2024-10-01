@@ -7,7 +7,62 @@
 {% block main %}
 <div class="container-fluid my-2">
     {% if user.is_authenticated %}
-    <div class="d-flex justify-content-end py-1"></div>
+    <div class="d-flex align-items-center justify-content-between py-2">
+        <!-- Filter -->
+        <form action="{% url 'core:tickets' %}" method="get">
+            {% csrf_token %}
+            <div class="d-flex flex-colum input-group text-center">
+                {% for field in searchForm %}
+                <div class="form-group me-2">
+                    <label for="{{form.label.id_for_label}}">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <button type="reset" title="limpiar" class="btn btn-outline-danger border border-0 rounded-5 fs-5">
+                    <span>X</span>
+                <button type="submit" class="input-group-append btn btn-outline-primary border-start-1 border ms-n5">
+                    Filtrar
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                        <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-outline-primary shadow" data-bs-toggle="modal" data-bs-target="#newTicketModal">
             Registrar Ticket
@@ -28,8 +83,7 @@
         </div>
     </div>
     {% endif %}
-
-    <table class="table table-hover">
+    <table class="table table-hover" style="font-size: .8rem;">
         <thead class="text-center">
             <tr>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">#</th>
@@ -38,8 +92,7 @@
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Severidad</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Impacto</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Estado</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Creado por</th>
-                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Asignado a</th>
+                <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Responsable</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Registrado</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Actualizado</th>
                 <th scope="col" class="bg-blueMilei-subtle text-white text-uppercase">Resolución</th>
@@ -58,18 +111,17 @@
                     {% endif %}
                 </th>
                 <td>{{ ticket.title }}</td>
-                <td>{{ ticket.category }}</td>
+                <td title="{{ticket.category.name}}">{{ ticket.category.subcategory }}</td>
                 <td><span class="severidad-{{ ticket.severity|lower }} px-1">{{ ticket.severity }}</span></td>
                 <td><span class="impacto-{{ ticket.impact|lower }}">{{ ticket.impact }}</span></td>
                 <td>{{ ticket.status }}</td>
-                <td>{{ ticket.createdBy }}</td>
                 <td>{{ ticket.assignedTo }}</td>
                 <td>{{ ticket.createdAt }}</td>
                 <td>{{ ticket.lastUpdate }}</td>
                 <td>{{ ticket.resolution_display }}</td>
                 <td>
                     {% if user.is_authenticated %}
-                    <a href="{% url 'core:update-ticket' ticket.pk %}" class="btn btn-sm btn-outline-primary">
+                    <a href="{% url 'core:update-ticket' ticket.pk %}" class="btn btn-sm btn-outline-primary" title="Editar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-pencil-square" viewBox="0 0 16 16">
                             <path
@@ -84,5 +136,6 @@
             {% endfor %}
         </tbody>
     </table>
+    
 </div>
 {% endblock main %}
