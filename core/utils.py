@@ -7,9 +7,9 @@ class TicketType(models.TextChoices):
     EVENTO          = "EVE", "Evento"
 
 class TicketStatus(models.TextChoices):
-    ABIERTO     = "ABIERTO", "Abierto"
-    TRAMITADO   =  "TRAMITADO", "Tramitado"
-    CERRADO     = "CERRADO", "Cerrado"
+    ABIERTO     = "ABIERTO"
+    TRAMITADO   =  "TRAMITADO"
+    CERRADO     = "CERRADO"
 
 class Severity(models.TextChoices):
     CRITICA = "CRITICA"

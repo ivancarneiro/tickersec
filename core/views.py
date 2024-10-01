@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -63,6 +63,8 @@ class TicketListView(ListView):
                 queryset = queryset.filter(severity=form.cleaned_data['severity'])
             if form.cleaned_data['impact']:
                 queryset = queryset.filter(impact=form.cleaned_data['impact'])
+            if form.cleaned_data['status']:
+                queryset = queryset.filter(status=form.cleaned_data['status'])
             if form.cleaned_data['assignedTo']:
                 queryset = queryset.filter(assignedTo=form.cleaned_data['assignedTo'])
         return queryset
@@ -86,7 +88,7 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class TicketDetailView(LoginRequiredMixin, DetailView):
+class TicketDetailView(LoginRequiredMixin, DetailView, FormView):
     model = Ticket
     template_name = 'core/ticket_detail.html'
     context_object_name = 'ticket'
@@ -94,6 +96,9 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
     form_class = TicketReportForm
 
     def get_context_data(self, **kwargs):
+        # Asegura que objet esté disponible
+        if not hasattr(self, 'object'):
+            self.object = self.get_object()
         context = super().get_context_data(**kwargs)
         ticket = self.get_object()
         context['ticket'] = ticket
@@ -101,20 +106,24 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         context['reports'] = ticket.reportes.all()
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = TicketReportForm(request.POST)
-        if form.is_valid():
-            report = form.save(commit=False)
-            report.ticket = self.get_object()
-            report.createdBy = self.request.user
-            report.save()
-            action = form.cleaned_data.get('action')
-            self.get_object().update_ticketStatus(action=action)
-            messages.success(request, 'Reporte creado y estado del ticket actualizado.')
-            return redirect(reverse_lazy('core:detail-ticket', kwargs={'pk': report.ticket.pk}))
-        else:
-            messages.error(request, 'Hubo un error al crear el reporte.')
-            return self.render_to_response(self.get_context_data(form=form))
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial'] = {'ticket': self.get_object()}
+        return kwargs
+
+    def form_valid(self, form):
+        report = form.save(commit=False)
+        report.ticket = self.get_object()
+        report.createdBy = self.request.user
+        report.save()
+        action = form.cleaned_data.get('action')
+        self.get_object().update_ticketStatus(action=action)
+        messages.success(self.request, 'Reporte creado y estado del ticket actualizado.')
+        return redirect(reverse_lazy('core:detail-ticket', kwargs={'pk': report.ticket.pk}))
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Hubo un error al crear el reporte.')
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class TicketUpdateView(LoginRequiredMixin, UpdateView):
@@ -125,5 +134,3 @@ class TicketUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('core:detail-ticket', kwargs={'pk': self.get_object().pk})
-
-# TODO falta manejar el request para el valor de action, que debería modificar el estado de un ticket en caso de elegir Cerrar.

@@ -44,12 +44,12 @@ class Ticket(models.Model):
     type = models.CharField(verbose_name='Tipo', max_length=50, choices=TicketType.choices, default=TicketType.INCIDENTE)
     category = models.ForeignKey(TicketCategory, verbose_name='Categoria', related_name='categorias', on_delete=models.PROTECT)
     title = models.CharField(verbose_name='Titulo', max_length=50, blank=False)
-    createdAt = models.DateTimeField(auto_now_add=False) # auto_now_add: actualiza el valor con la hora y la fecha de creación del registro.
+    createdAt = models.DateTimeField(auto_now_add=True) # auto_now_add: actualiza el valor con la hora y la fecha de creación del registro.
     lastUpdate = models.DateTimeField(auto_now=True) # auto_now: actualiza el valor del campo a la hora y fecha actuales cada vez que se llama a Model.save().
     resolution = models.DurationField(verbose_name='Resolucion', blank=True, null=True)
-    severity = models.CharField(verbose_name='Severidad', choices=Severity.choices, default=Severity.NULA.name, max_length=7)
-    impact = models.CharField(verbose_name='Impacto', choices=Impact.choices, default=Impact.NULO.name, max_length=10)
-    status = models.CharField(verbose_name='Estado', choices=TicketStatus.choices, default=TicketStatus.ABIERTO.name, max_length=10)
+    severity = models.CharField(verbose_name='Severidad', choices=Severity.choices, default=Severity.NULA, max_length=7)
+    impact = models.CharField(verbose_name='Impacto', choices=Impact.choices, default=Impact.NULO, max_length=10)
+    status = models.CharField(verbose_name='Estado', choices=TicketStatus.choices, default=TicketStatus.ABIERTO, max_length=10)
     createdBy = models.ForeignKey(User, verbose_name='Remitente', related_name='created_tickets', on_delete=models.PROTECT, blank=False)
     assignedTo = models.ForeignKey(User, verbose_name='Responsable', related_name='assigned_tickets', on_delete=models.PROTECT, blank=False)
     resume = models.CharField(verbose_name='Resumen', max_length=300, blank=False)

@@ -1,4 +1,3 @@
-from random import choices
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -62,7 +61,7 @@ class TicketSearchForm(forms.Form):
     type = forms.ChoiceField(
         label='Tipo',
         required=False,
-        choices=[('','--------')]+[(choice.name, choice.value) for choice in TicketType],
+        choices=[('','--------')]+[(choice.value, choice.name) for choice in TicketType],
         widget=forms.Select(attrs={'class': 'form-control form-control-sm text-center'})
     )
     category = forms.ModelChoiceField(
@@ -74,13 +73,19 @@ class TicketSearchForm(forms.Form):
     severity = forms.ChoiceField(
         label='Severidad',
         required=False,
-        choices=[('','--------')]+[(choice.name, choice.value) for choice in Severity],
+        choices=[('','--------')]+[(choice.value, choice.name) for choice in Severity],
         widget=forms.Select(attrs={'class': 'form-control form-control-sm text-center'})
     )
     impact = forms.ChoiceField(
         label='Impacto',
         required=False,
-        choices=[('','--------')]+[(choice.name, choice.value) for choice in Impact],
+        choices=[('','--------')]+[(choice.value, choice.name) for choice in Impact],
+        widget=forms.Select(attrs={'class': 'form-control form-control-sm text-center'})
+    )
+    status = forms.ChoiceField(
+        label='Estado',
+        required=False,
+        choices=[('','--------')]+[(choice.value, choice.name) for choice in TicketStatus],
         widget=forms.Select(attrs={'class': 'form-control form-control-sm text-center'})
     )
     assignedTo = forms.ModelChoiceField(
@@ -139,10 +144,11 @@ class TicketUpdateForm(forms.ModelForm):
 class TicketReportForm(forms.ModelForm):
     CHOICES = [('','----'),('close','Cerrar')]
     
-    action = forms.ChoiceField(choices=CHOICES, required=True, label='Acción')
+    action = forms.ChoiceField(choices=CHOICES, required=False, label='Acción')
     class Meta:
         model = TicketReport
         fields = ['action','report']
         widgets = {
-            'action': forms.Select(attrs={'class': 'form-select'})
+            'action': forms.Select(attrs={'class': 'form-select'}),
+            'report': QuillField(blank=False),
         }
