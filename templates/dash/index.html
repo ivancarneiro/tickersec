@@ -6,8 +6,24 @@
 
 {% block main %}
 <div class="container-fluid justify-content-center m-0 p-2 bg-secondary">
-    <div class="d-flex justify-content-center vh-100">
-        <img src="{% static 'img/dash/cybersecurity_3.jpg' %}" class="h-75" alt="..." srcset="">
+    <div class="d-flex flex-wrap justify-content-center">
+        <div class="m-2" id="ticketSevBarGraph">
+            {% if ticketSevBar %}
+            {{ ticketSevBar|safe }}
+            {% endif %}
+        </div>
+
+        <div class="m-2" id="ticketSevPieGraph">
+            {% if ticketSevPie %}
+            {{ ticketSevPie|safe }}
+            {% endif %}
+        </div>
+
+        <div class="m-2" id="ticketCatPieGraph">
+            {% if ticketCatPie %}
+            {{ ticketCatPie|safe }}
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock main %}

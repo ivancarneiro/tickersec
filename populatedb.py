@@ -2,7 +2,6 @@ import os
 from time import sleep
 from unicodedata import category
 
-from flask.cli import F
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tickersec.settings')
 
 import django, random
@@ -22,7 +21,7 @@ def es_bisiesto(year):
     return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
 
 def random_date():
-    '''Genera una fecha aleatoria en el año actual sin segundos.'''
+    '''Genera una fecha aleatoria en el año actual sin segundos ni microsegundos.'''
     current_year = datetime.now().year
     month31 = [1, 3, 5, 7, 8, 10, 12]
     month30 = [4, 6, 9, 11]
@@ -42,9 +41,11 @@ def random_date():
     hour = random.randint(0, 23)
     minute = random.randint(0, 59)
     
-    random_date = datetime(current_year, month, day, hour, minute)
-    return random_date.replace(second=0, microsecond=0)
+    random_date = datetime(current_year, month, day, hour, minute, second=0, microsecond=0)
+    return random_date
 
+# for _ in range(10):
+#     print(random_date())
 
 def create_ticket(type,category,date,severity,impact):
     '''Método para poblar la tabla tickets, creando un ticket con datos aleatorios en tipo, categoría, fecha (año actual), severidad, impacto.'''
@@ -67,20 +68,17 @@ def create_ticket(type,category,date,severity,impact):
 # print(TicketCategory.objects.get(id=random.randint(1, len(categorias)+1)))
 # print(Ticket.objects.all().last().pk+1)
 
-for _ in range(100):
+print(f'Tickets actuales en db: {Ticket.objects.all().count()}')
+
+for _ in range(1000):
     type= random.choice(list(TicketType))
     category = random.choice(list(TicketCategory.objects.all()))
     date = random_date()
     severity = random.choice(list(Severity))
     impact = random.choice(list(Impact))
     create_ticket(type,category,date,severity,impact)
-    sleep(1)
 
 
 if __name__ == '__main__':
     print('Poblando Database Tabla core_ticket...')
-
-    # Imprimir los últimos 3 tickets creados
-    # ultimos_tickets = Ticket.objects.all().order_by('-id')[:3]
-    # for ticket in ultimos_tickets:
-    #     print(ticket)
+    print(f'Tickets en db: {Ticket.objects.all().count()}')
