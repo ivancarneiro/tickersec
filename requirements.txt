@@ -5,4 +5,3 @@ pillow==10.4.0
 django-bootstrap5==24.2
 django-quill-editor==0.1.40
 pandas
-django-echarts

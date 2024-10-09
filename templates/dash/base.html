@@ -31,7 +31,7 @@
                 <a class="navbar-brand" href="{% url 'dash:index' %}">
                     <img src='{% static "img/dash/favicon-824.png" %}' width="80rem" alt="" srcset="">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                <button class="navbar-toggler btn btn-outline-light border border-light" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -62,7 +62,7 @@
                         </li>
                     </ul>
                     <!-- Fecha Hora -->
-                    <div class="d-flex align-items-center me-2 mb-2">
+                    <div class="d-flex align-items-center me-2 my-2">
                         <div class="nav-link disabled text-white p-1 me-3" id="fechaCompleta"></div>
                         <div class="nav-link disabled text-white p-1 me-5 border rounded" id="reloj"></div>
                     </div>
@@ -108,8 +108,8 @@
         </div>
     </footer>
 
-    {% block js %}
     <script src="{% static 'js/dash/reloj.js' %}"></script>
+    {% block js %}
     {% endblock js %}
 </body>
 

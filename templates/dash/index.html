@@ -7,23 +7,13 @@
 {% block main %}
 <div class="container-fluid justify-content-center m-0 p-2 bg-secondary">
     <div class="d-flex flex-wrap justify-content-center">
-        <div class="m-2" id="ticketSevBarGraph">
-            {% if ticketSevBar %}
-            {{ ticketSevBar|safe }}
-            {% endif %}
-        </div>
-
-        <div class="m-2" id="ticketSevPieGraph">
-            {% if ticketSevPie %}
-            {{ ticketSevPie|safe }}
-            {% endif %}
-        </div>
-
-        <div class="m-2" id="ticketCatPieGraph">
-            {% if ticketCatPie %}
-            {{ ticketCatPie|safe }}
-            {% endif %}
-        </div>
+        
     </div>
 </div>
 {% endblock main %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"
+    integrity="sha512-k37wQcV4v2h6jgYf5IUz1MoSKPpDs630XGSmCaCCOXxy2awgAWKHGZWr9nMyGgk3IOxA1NxdkN8r1JHgkUtMoQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock js %}
