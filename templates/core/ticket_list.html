@@ -6,7 +6,28 @@
 
 {% block main %}
 <div class="container-fluid my-2">
-    {% if user.is_authenticated %}
+    <div class="d-flex justify-content-end">
+        {% if user.is_authenticated %}
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-sm btn-outline-primary shadow" data-bs-toggle="modal" data-bs-target="#newTicketModal">
+            Registrar Ticket
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="newTicketModal" tabindex="-1" aria-labelledby="newTicketModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="newTicketModalLabel">Nuevo Ticket</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% include "core/ticket_create.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
     <div class="d-flex align-items-center justify-content-between py-2">
         <!-- Filter -->
         <form action="{% url 'core:tickets' %}" method="get">
@@ -18,9 +39,9 @@
                     {{field}}
                 </div>
                 {% endfor %}
-                <button type="reset" title="limpiar" class="btn btn-outline-danger border border-0 rounded-5 fs-5">
+                <button type="reset" title="limpiar" class="btn btn-sm btn-outline-danger border border-0 rounded-5 fs-5">
                     <span>X</span>
-                <button type="submit" class="input-group-append btn btn-outline-primary border-start-1 border ms-n5">
+                <button type="submit" class="input-group-append btn btn-sm btn-outline-primary border-start-1 border ms-n5">
                     Filtrar
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
                         <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
@@ -45,7 +66,7 @@
                 {% for num in page_obj.paginator.page_range %}
                 {% if page_obj.number == num %}
                 <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
                 <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
                 {% endif %}
                 {% endfor %}
@@ -63,26 +84,7 @@
                 {% endif %}
             </ul>
         </nav>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-outline-primary shadow" data-bs-toggle="modal" data-bs-target="#newTicketModal">
-            Registrar Ticket
-        </button>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="newTicketModal" tabindex="-1" aria-labelledby="newTicketModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="newTicketModalLabel">Nuevo Ticket</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {% include "core/ticket_create.html" %}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
     <table class="table table-hover" style="font-size: .8rem;">
         <thead class="text-center">
             <tr>

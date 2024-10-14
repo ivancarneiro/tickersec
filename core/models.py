@@ -71,12 +71,16 @@ class Ticket(models.Model):
             minutes = (total_seconds % 3600) // 60
             return f'{days}d {hours}h {minutes}min'
 
-    def update_ticketStatus(self, action=None):
+    def update_ticketStatus(self, action=None, assignedTo=None):
         '''Actualiza el estado del ticket al crear el primer reporte.'''
         if action == 'close':
             self.status = TicketStatus.CERRADO
         elif self.status == TicketStatus.ABIERTO and self.reportes.count() > 0:
             self.status = TicketStatus.TRAMITADO
+        
+        if assignedTo:
+            self.assignedTo = assignedTo
+        
         self.save()
 
     def get_absolute_url(self):

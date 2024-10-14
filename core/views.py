@@ -117,12 +117,13 @@ class TicketDetailView(LoginRequiredMixin, DetailView, FormView):
         report.createdBy = self.request.user
         report.save()
         action = form.cleaned_data.get('action')
-        self.get_object().update_ticketStatus(action=action)
-        messages.success(self.request, 'Reporte creado y estado del ticket actualizado.')
+        assignedTo = form.cleaned_data.get('assignedTo')
+        self.get_object().update_ticketStatus(action=action, assignedTo=assignedTo)
+        messages.success(self.request, 'Reporte guardado.')
         return redirect(reverse_lazy('core:detail-ticket', kwargs={'pk': report.ticket.pk}))
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Hubo un error al crear el reporte.')
+        messages.error(self.request, 'Hubo un error al guardar el reporte.')
         return self.render_to_response(self.get_context_data(form=form))
 
 

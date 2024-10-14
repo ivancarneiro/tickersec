@@ -1,3 +1,4 @@
+from random import choice
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -111,8 +112,7 @@ class TicketCategoryForm(forms.ModelForm):
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['type', 'category', 'title',
-            'severity', 'impact', 'assignedTo', 'resume']
+        fields = ['type', 'category', 'title', 'severity', 'impact', 'assignedTo', 'resume']
         widgets = {
             'type': forms.Select(attrs={'class': 'form-control form-control-sm'}),
             'category': forms.Select(attrs={'class': 'form-control form-control-sm'}),
@@ -127,8 +127,7 @@ class TicketForm(forms.ModelForm):
 class TicketUpdateForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['type', 'category', 'title', 'severity',
-            'impact', 'assignedTo', 'status', 'resume']
+        fields = ['type', 'category', 'title', 'severity', 'impact', 'assignedTo', 'status', 'resume']
         widgets = {
             'type': forms.Select(attrs={'class': 'form-control form-control-sm'}),
             'category': forms.Select(attrs={'class': 'form-control form-control-sm'}),
@@ -144,11 +143,13 @@ class TicketUpdateForm(forms.ModelForm):
 class TicketReportForm(forms.ModelForm):
     CHOICES = [('','----'),('close','Cerrar')]
     
-    action = forms.ChoiceField(choices=CHOICES, required=False, label='Acción')
+    action = forms.ChoiceField(label='Acción', choices=CHOICES, required=False)
+    assignedTo = forms.ModelChoiceField(label='Responsable', queryset=User.objects.all(), required=False)
     class Meta:
         model = TicketReport
-        fields = ['action','report']
+        fields = ['action','assignedTo','report']
         widgets = {
-            'action': forms.Select(attrs={'class': 'form-select'}),
+            'action': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'assignedTo': forms.Select(attrs={'class': 'form-control form-control-sm'}),
             'report': QuillField(blank=False),
         }
