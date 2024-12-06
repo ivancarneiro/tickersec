@@ -1,4 +1,4 @@
-django==4.2.15
+django==5.0.10
 python-decouple==3.8
 psycopg2-binary==2.9.9
 pillow==10.4.0
