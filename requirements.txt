@@ -2,34 +2,32 @@
 #    uv pip compile pyproject.toml -o requirements.txt
 asgiref==3.11.1
     # via django
-django==5.0.11
+django==6.0.7
     # via
     #   tickersec (pyproject.toml)
     #   django-bootstrap5
     #   django-quill-editor
-django-bootstrap5==24.2
+django-bootstrap5==26.2
     # via tickersec (pyproject.toml)
-django-quill-editor==0.1.40
+django-quill-editor==0.1.42
     # via tickersec (pyproject.toml)
+narwhals==2.24.0
+    # via plotly
 numpy==2.5.1
-    # via pandas
+    # via tickersec (pyproject.toml)
 packaging==26.2
     # via plotly
-pandas==3.0.3
+pillow==12.3.0
     # via tickersec (pyproject.toml)
-pillow==10.4.0
+plotly==6.9.0
     # via tickersec (pyproject.toml)
-plotly==5.24.1
+polars==1.42.1
     # via tickersec (pyproject.toml)
-psycopg2-binary==2.9.9
+polars-runtime-32==1.42.1
+    # via polars
+psycopg2-binary==2.9.12
     # via tickersec (pyproject.toml)
-python-dateutil==2.9.0.post0
-    # via pandas
 python-decouple==3.8
     # via tickersec (pyproject.toml)
-six==1.17.0
-    # via python-dateutil
 sqlparse==0.5.5
     # via django
-tenacity==9.1.4
-    # via plotly
