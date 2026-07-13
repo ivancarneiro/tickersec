@@ -1,8 +1,8 @@
 <!--
 Sync Impact Report:
-Version change: None -> 1.0.0
-List of modified principles: None -> Initialized core principles
-Added sections: Core Principles, Technical Constraints, Development Workflow, Governance
+Version change: 1.0.0 -> 1.1.0
+List of modified principles: None -> Updated Technical Constraints
+Added sections: None
 Templates updated: ✅ .specify/templates/plan-template.md, ✅ .specify/templates/spec-template.md, ✅ .specify/templates/tasks-template.md
 -->
 # TickerSec Constitution
@@ -14,7 +14,7 @@ Todas las dependencias de Python y la gestión del entorno virtual del proyecto 
 *Rationale*: Centralizar con `uv` garantiza instalaciones ultrarrápidas, repetibles, consistencia entre entornos locales y de producción, y elimina los conflictos típicos de dependencias en Django.
 
 ### II. Arquitectura Limpia y Desacoplada (core y dash)
-El proyecto debe mantener una estricta separación de responsabilidades entre sus dos aplicaciones Django: `core` (responsable de la lógica de negocio, modelos de base de datos de tickets, auditorías y CRUD) y `dash` (responsable de la autenticación, vistas del panel y visualizaciones analíticas basadas en Plotly y Pandas). Ninguna lógica de renderizado gráfico de `dash` debe inyectarse en los modelos o vistas del `core`.
+El proyecto debe mantener una estricta separación de responsabilidades entre sus dos aplicaciones Django: `core` (responsable de la lógica de negocio, modelos de base de datos de tickets, auditorías y CRUD) y `dash` (responsable de la autenticación, vistas del panel y visualizaciones analíticas basadas en Plotly y Polars). Ninguna lógica de renderizado gráfico de `dash` debe inyectarse en los modelos o vistas del `core`.
 *Rationale*: Mantener este desacoplamiento previene la acumulación de deuda técnica y permite evolucionar el motor de visualización (gráficos) de forma independiente del núcleo transaccional.
 
 ### III. Configuración basada en el Entorno con python-decouple
@@ -35,20 +35,20 @@ Ninguna refactorización crítica o desarrollo de nuevas funcionalidades puede i
 ## Technical Constraints
 
 - **Python**: Versión >= 3.10.
-- **Django**: Versión 5.0.11.
-- **Visualización**: Plotly 5.24.1 + Pandas.
-- **Editor**: django-quill-editor 0.1.40.
-- **Gestión de Git**: Las ramas deben crearse siguiendo la convención de Spec-kit. Se utilizará la herramienta CLI `gh` de GitHub configurada con la cuenta `ivancarneiro` para gestionar pull requests y sincronización del repositorio.
+- **Django**: Versión 5.0.11 o posterior (última versión estable).
+- **Visualización**: Plotly 5.24.1 + Polars (última versión estable).
+- **Editor**: django-quill-editor 0.1.40 o posterior.
+- **Gestión de Git**: Las ramas deben crearse siguiendo la convención de Spec-kit y conventional commits. Se utilizará la herramienta CLI `gh` de GitHub configurada con la cuenta `ivancarneiro` para gestionar pull requests y sincronización del repositorio.
 
 ## Development Workflow
 
 1. **Especificar**: Se crea o actualiza el archivo `spec.md` para la funcionalidad.
 2. **Planificar**: Se redacta `plan.md` resolviendo dudas de arquitectura e impacto en base de datos.
-3. **Validar**: Se evalúa que el plan respete los principios de esta Constitución.
+3. **Validar**: Se evalúa que el plan respeete los principios de esta Constitución.
 4. **Implementar**: Se ejecutan las tareas paso a paso, asegurando que el entorno y dependencias sigan bajo el control estricto de `uv`.
 
 ## Governance
 
 Toda modificación a esta Constitución o adición de principios debe ser documentada como un incremento de versión semántica de la gobernanza del proyecto. Los cambios mayores (como la remoción de un principio principal) requieren justificación explícita y una actualización de las plantillas dependientes bajo la carpeta `.specify/templates/`.
 
-**Version**: 1.0.0 | **Ratified**: 2026-07-13 | **Last Amended**: 2026-07-13
+**Version**: 1.1.0 | **Ratified**: 2026-07-13 | **Last Amended**: 2026-07-13

@@ -1,4 +1,4 @@
-import pandas as pd
+import polars as pl
 import plotly.express as px
 from core.models import Ticket
 
@@ -23,8 +23,12 @@ def barTicketSeveritiesXmonth():
         'month': obtener_nombre_mes_abreviado(ticket.createdAt.month),
         'severity': ticket.severity
     } for ticket in tickets]
-    df = pd.DataFrame(data)
-    df_grouped = df.groupby(['month', 'severity']).size().reset_index(name='count')
+    
+    df = pl.DataFrame(data)
+    if df.height > 0:
+        df_grouped = df.group_by(['month', 'severity']).len().rename({'len': 'count'})
+    else:
+        df_grouped = pl.DataFrame(schema={'month': pl.String, 'severity': pl.String, 'count': pl.Int64})
 
     # Crear el gráfico de barras
     fig = px.bar(df_grouped, x='month', y='count', color='severity',
@@ -49,8 +53,12 @@ def pieTicketSeverities():
     data = [{
         'severity': ticket.severity
     } for ticket in tickets]
-    df = pd.DataFrame(data)
-    df_grouped = df.groupby(['severity']).size().reset_index(name='count')
+    
+    df = pl.DataFrame(data)
+    if df.height > 0:
+        df_grouped = df.group_by(['severity']).len().rename({'len': 'count'})
+    else:
+        df_grouped = pl.DataFrame(schema={'severity': pl.String, 'count': pl.Int64})
 
     # Crear el gráfico de torta
     fig = px.pie(df_grouped, values='count', names='severity',
@@ -69,8 +77,16 @@ def pieTicketCategories():
     data = [{
         'category': ticket.category.name
     } for ticket in tickets]
-    df = pd.DataFrame(data)
-    df_grouped = df.groupby(['category']).size().reset_index(name='count').nlargest(10, 'count')
+    
+    df = pl.DataFrame(data)
+    if df.height > 0:
+        df_grouped = (df.group_by(['category'])
+                      .len()
+                      .rename({'len': 'count'})
+                      .sort('count', descending=True)
+                      .head(10))
+    else:
+        df_grouped = pl.DataFrame(schema={'category': pl.String, 'count': pl.Int64})
 
     # Crear el gráfico de torta
     fig = px.pie(df_grouped, values='count', names='category',
